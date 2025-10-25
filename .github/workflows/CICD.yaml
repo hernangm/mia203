@@ -57,7 +57,7 @@ jobs:
         pip install -r src/requirements.txt
 
     - name: Run tests with coverage
-      run: pytest --cov=src/tests --cov-report=json --cov-report=term-missing
+      run: pytest --cov=src/tests --cov-report=json:coverage/coverage-summary.json --cov-report=term-missing
 
     - name: Coverage Badge
       uses: we-cli/coverage-badge-action@v1.0.1
