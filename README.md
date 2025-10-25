@@ -7,7 +7,7 @@
 
 La API está disponible en [https://mia203.onrender.com](https://mia203-api.onrender.com)
 
-La documentacion esta disponible en [https://mia203.onrender.com/docs](https://mia203.onrender.com/docs)
+La documentación está disponible en [https://mia203.onrender.com/docs](https://mia203.onrender.com/docs)
 
 ## Integrantes
 
@@ -36,20 +36,20 @@ python -m venv venv
 source venv/bin/activate
 ```
 
-3. **Instalar dependencias**
+3. **Instala dependencias**
 
 ```bash
 python -m pip install --upgrade pip
 pip install -r src/requirements.txt
 ```
 
-## Cómo ejecutar la aplicación
+## Ejecuta la aplicación
 
 ```bash
 uvicorn main:app --reload
 ```
 
-## Cómo correr los tests
+## Corre los tests
 
 ```bash
 pytest src/tests
