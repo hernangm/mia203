@@ -36,6 +36,9 @@ class FakePM:
 
 
 def setup_simple_env(monkeypatch):
+    """
+    Monkeypatch PaymentService dependencies to use simple mock classes for isolated testing.
+    """
     # make PaymentService use simple classes so tests don't depend on other modules
     monkeypatch.setattr(ps_mod, "Payment", SimplePayment)
     # PaymentMethod type used for isinstance checks
@@ -46,12 +49,18 @@ def setup_simple_env(monkeypatch):
 
 
 def read_payments_file(path: Path) -> dict:
+    """
+    Helper to read the payments file as a dictionary.
+    """
     if not path.exists():
         return {}
     return json.loads(path.read_text(encoding="utf-8"))
 
 
 def test_create_payment_succeeds(tmp_path, monkeypatch):
+    """
+    Test that PaymentService.create_payment creates and persists a payment with correct fields.
+    """
     setup_simple_env(monkeypatch)
 
     data_file = tmp_path / "payments.json"
@@ -73,6 +82,9 @@ def test_create_payment_succeeds(tmp_path, monkeypatch):
 
 
 def test_create_payment_duplicate_id_raises(tmp_path, monkeypatch):
+    """
+    Test that PaymentService.create_payment raises ValueError when payment_id already exists.
+    """
     setup_simple_env(monkeypatch)
 
     data_file = tmp_path / "payments.json"

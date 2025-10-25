@@ -18,6 +18,11 @@ class MockPayment:
         self.status = status
 
 def test_validate_true_for_valid_payment():
+    """
+    Test that validation returns True when:
+    - payment amount is less than 10000
+    - exactly one registered payment of the same method exists
+    """
     strategy = CreditCardValidationStrategy()
     method = MockPaymentMethod()
     payment = MockPayment("p1", 5000, method, method.REGISTRADO)
@@ -27,6 +32,10 @@ def test_validate_true_for_valid_payment():
     assert strategy.validate(payment, payments) is True
 
 def test_validate_false_for_high_amount():
+    """
+    Test that validation returns False when payment amount is greater than or equal to 10000,
+    even if there is one registered payment of the same method.
+    """
     strategy = CreditCardValidationStrategy()
     method = MockPaymentMethod()
     payment = MockPayment("p1", 15000, method, method.REGISTRADO)
@@ -36,6 +45,10 @@ def test_validate_false_for_high_amount():
     assert strategy.validate(payment, payments) is False
 
 def test_validate_false_for_no_registered_payments():
+    """
+    Test that validation returns False when there are no registered payments of the same method,
+    even if the payment amount is valid.
+    """
     strategy = CreditCardValidationStrategy()
     method = MockPaymentMethod()
     payment = MockPayment("p1", 5000, method, method.REGISTRADO)
@@ -43,6 +56,10 @@ def test_validate_false_for_no_registered_payments():
     assert strategy.validate(payment, payments) is False
 
 def test_validate_false_for_multiple_registered_payments():
+    """
+    Test that validation returns False when there are more than one registered payments of the same method,
+    even if the payment amount is valid.
+    """
     strategy = CreditCardValidationStrategy()
     method = MockPaymentMethod()
     payment = MockPayment("p1", 5000, method, method.REGISTRADO)
