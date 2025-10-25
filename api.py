@@ -25,11 +25,7 @@ async def register_payment(
 		amount: monto (query)
 		payment_method: método (query)
 	"""
-	payments = payment_service.load_all_payments()
-	pid = str(payment_id)
-	if pid in payments:
-		raise HTTPException(status_code=400, detail="Payment already exists")
-	payment = payment_service.save_payment(pid, amount, payment_method)
+	payment = payment_service.register_payment(payment_id, amount, payment_method)
 	return payment
 
 
@@ -47,12 +43,12 @@ async def update_payment(
 @app.post("/payments/{payment_id}/pay")
 async def pay_payment(payment_id: str = Path(..., description="ID del pago")):
 	"""Marca un pago como pagado."""
-	payment = payment_service.pay(payment_id)
+	payment = payment_service.pay_payment(payment_id)
 	return payment
 
 
 @app.post("/payments/{payment_id}/revert")
 async def revert_payment(payment_id: str = Path(..., description="ID del pago")):
 	"""Revierte un pago al estado registrado."""
-	payment = payment_service.revert(payment_id)
+	payment = payment_service.revert_payment(payment_id)
 	return payment

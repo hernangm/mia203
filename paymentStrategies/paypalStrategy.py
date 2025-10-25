@@ -1,4 +1,4 @@
-import constants
+import Payment
 
-def validate(payment, payments):
-    return payments[constants.AMOUNT] < 5000
+def validate(payment: Payment, payments: list):
+    return payment.amount < 5000
