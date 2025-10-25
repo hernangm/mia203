@@ -1,13 +1,17 @@
 import json
-from typing import Dict
-from Payments.Payment import Payment
-from Payments.PaymentMethod import PaymentMethod, try_get_payment_method
-from Payments.PaymentValidationStrategies.PaymentMethodValidationStrategyFactory import PaymentMethodValidationStrategyFactory
-from Payments.PaymentStatus import PaymentStatus
+from typing import Dict, Union, Optional
+from payments import Payment, PaymentMethod, PaymentStatus, try_get_payment_method
+from payments.validation_strategies import PaymentMethodValidationStrategyFactory
 
 _validation_factory = PaymentMethodValidationStrategyFactory()
 
 class PaymentService:
+    """
+    Service class for managing payment operations:
+    - Create, update, pay, and revert payments
+    - Persist payments to disk
+    - Validate payment methods and statuses
+    """
     def __init__(self, data_path: str):
         """Init service and load persisted payments."""
         self.data_path = data_path
@@ -17,7 +21,7 @@ class PaymentService:
         """Return a shallow copy of payments."""
         return dict(self.payments)
 
-    def create_payment(self, payment_id: str, amount: float, payment_method: PaymentMethod) -> Payment:
+    def create_payment(self, payment_id: str, amount: float, payment_method: Union[PaymentMethod, str]) -> Payment:
         """Create and persist a new payment."""
         if payment_id in self.payments:
             raise ValueError("Payment with this ID already exists")
@@ -30,17 +34,19 @@ class PaymentService:
         self._save_all_payments(payment_id, new, dict(self.payments))
         return new
     
-    def update_payment(self, payment_id: str, amount: float, payment_method: PaymentMethod) -> Payment:
+    def update_payment(self, payment_id: str, amount: Optional[float], payment_method: Optional[Union[PaymentMethod, str]]) -> Payment:
         """Update mutable fields of a registered payment."""
         payment = self._get_payment(payment_id)
         if payment.status == PaymentStatus.REGISTRADO:
-            payment.amount = amount
-            if not isinstance(payment_method, PaymentMethod):
-                ok, pm = try_get_payment_method(payment_method)
-                if not ok:
-                    raise ValueError("invalid payment_method")
-                payment_method = pm
-            payment.payment_method = payment_method
+            if amount is not None:
+                payment.amount = amount
+            if payment_method is not None:
+                if not isinstance(payment_method, PaymentMethod):
+                    ok, pm = try_get_payment_method(payment_method)
+                    if not ok:
+                        raise ValueError("invalid payment_method")
+                    payment_method = pm
+                payment.payment_method = payment_method
             self._save_all_payments(payment_id, payment, dict(self.payments))
         return payment
 
@@ -88,8 +94,6 @@ class PaymentService:
     
     def _save_all_payments(self, payment_id: str, payment: Payment, payments_dict: Dict[str, Payment]) -> None:
         """Persist payments to disk (overwrites file)."""
-        if payments_dict is None:
-            payments_dict = self.payments
         payments_dict[payment_id] = payment
         self.payments = payments_dict
         serializable_data = {}

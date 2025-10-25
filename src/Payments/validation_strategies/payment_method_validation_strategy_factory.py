@@ -1,12 +1,13 @@
-from typing import Optional
-from .PayPalValidationStrategy import PayPalValidationStrategy
-from .CreditCardValidationStrategy import CreditCardValidationStrategy
-from ..PaymentMethod import PaymentMethod
-from .BasePaymentMethodValidationStrategy import BasePaymentMethodValidationStrategy
+from typing import Optional, Dict
+from payments import PaymentMethod
+from payments.validation_strategies import BasePaymentMethodValidationStrategy, PayPalValidationStrategy, CreditCardValidationStrategy
 
 class PaymentMethodValidationStrategyFactory:
+    """
+    Factory for retrieving payment method validation strategies.
+    """
     def __init__(self) -> None:
-        self._registry: dict[PaymentMethod, BasePaymentMethodValidationStrategy] = {
+        self._registry: Dict[PaymentMethod, BasePaymentMethodValidationStrategy] = {
             PaymentMethod.PAYPAL: PayPalValidationStrategy(),
             PaymentMethod.CREDIT_CARD: CreditCardValidationStrategy(),
         }

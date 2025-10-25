@@ -2,6 +2,9 @@ from enum import Enum
 from typing import Optional, Tuple
 
 class PaymentMethod(str, Enum):
+    """
+    Enum representing supported payment methods.
+    """
     PAYPAL = "PAYPAL"
     CREDIT_CARD = "CREDIT_CARD"
 
@@ -16,6 +19,10 @@ def parse_payment_method(raw: Optional[str]) -> PaymentMethod:
     raise ValueError(f"invalid payment method: {raw!r}")
 
 def try_get_payment_method(raw: Optional[str]) -> Tuple[bool, Optional[PaymentMethod]]:
+    """
+    Attempts to parse a payment method from a raw string.
+    Returns a tuple (success: bool, payment_method: Optional[PaymentMethod]).
+    """
     try:
         return True, parse_payment_method(raw)
     except ValueError:

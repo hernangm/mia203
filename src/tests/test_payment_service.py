@@ -8,9 +8,7 @@ import json
 import pytest
 from pathlib import Path
 
-import Payments.PaymentService as ps_mod
-from Payments.PaymentService import PaymentService
-from Payments.PaymentStatus import PaymentStatus
+from payments import PaymentService, PaymentStatus
 
 
 class SimplePayment:
@@ -40,12 +38,12 @@ def setup_simple_env(monkeypatch):
     Monkeypatch PaymentService dependencies to use simple mock classes for isolated testing.
     """
     # make PaymentService use simple classes so tests don't depend on other modules
-    monkeypatch.setattr(ps_mod, "Payment", SimplePayment)
+    monkeypatch.setattr(PaymentService, "Payment", SimplePayment)
     # PaymentMethod type used for isinstance checks
     PMClass = FakePM
-    monkeypatch.setattr(ps_mod, "PaymentMethod", PMClass)
+    monkeypatch.setattr(PaymentService, "PaymentMethod", PMClass)
     # try_get_payment_method returns a tuple (ok, instance)
-    monkeypatch.setattr(ps_mod, "try_get_payment_method", lambda v: (True, PMClass()))
+    monkeypatch.setattr(PaymentService, "try_get_payment_method", lambda v: (True, PMClass()))
 
 
 def read_payments_file(path: Path) -> dict:

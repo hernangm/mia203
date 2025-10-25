@@ -2,10 +2,8 @@ import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from Payments.PaymentValidationStrategies.PaymentMethodValidationStrategyFactory import PaymentMethodValidationStrategyFactory
-from Payments.PaymentMethod import PaymentMethod
-from Payments.PaymentValidationStrategies.PayPalValidationStrategy import PayPalValidationStrategy
-from Payments.PaymentValidationStrategies.CreditCardValidationStrategy import CreditCardValidationStrategy
+from payments import PaymentMethod
+from payments.validation_strategies import PaymentMethodValidationStrategyFactory, PayPalValidationStrategy, CreditCardValidationStrategy
 
 def test_get_returns_paypal_strategy():
     """

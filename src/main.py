@@ -1,12 +1,15 @@
+"""
+FastAPI application for managing payments.
+Provides endpoints for creating, updating, paying, and reverting payments.
+"""
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Path as FPath, Query, status
 
 from Payments.PaymentService import PaymentService
-from typing import List, Any
+from typing import List
 from Payments.Payment import Payment
 
-# Ensure a reproducible data path relative to this file
 _data_dir = Path(__file__).resolve().parent / "data"
 _data_dir.mkdir(exist_ok=True)
 _data_file = str(_data_dir / "payments.json")
@@ -15,7 +18,7 @@ app = FastAPI()
 payment_service = PaymentService(_data_file)
 
 
-@app.get("/payments")
+@app.get("/payments", response_model=List[Payment])
 async def get_all_payments() -> List[Payment]:
     """
     Returns a list of all payments.
@@ -27,7 +30,7 @@ async def get_all_payments() -> List[Payment]:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
 
-@app.post("/payments/{payment_id}", status_code=status.HTTP_201_CREATED)
+@app.post("/payments/{payment_id}", status_code=status.HTTP_201_CREATED, response_model=Payment)
 async def create_payment(
     payment_id: str = FPath(..., description="Payment ID"),
     amount: float = Query(..., description="Payment amount"),
@@ -48,7 +51,7 @@ async def create_payment(
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
 
-@app.post("/payments/{payment_id}/update")
+@app.post("/payments/{payment_id}/update", response_model=Payment)
 async def update_payment(
     payment_id: str = FPath(..., description="Payment ID"),
     amount: float | None = None,
@@ -69,11 +72,11 @@ async def update_payment(
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
 
-@app.post("/payments/{payment_id}/pay")
+@app.post("/payments/{payment_id}/pay", response_model=Payment)
 async def pay_payment(payment_id: str = FPath(..., description="Payment ID")) -> Payment:
     """
     Attempts to process the payment.
-    Response: PaymentStatus
+    Response: Payment
     """
     try:
         return payment_service.pay_payment(payment_id)
@@ -85,11 +88,11 @@ async def pay_payment(payment_id: str = FPath(..., description="Payment ID")) ->
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
 
-@app.post("/payments/{payment_id}/revert")
+@app.post("/payments/{payment_id}/revert", response_model=Payment)
 async def revert_payment(payment_id: str = FPath(..., description="Payment ID")) -> Payment:
     """
     Reverts the payment if possible.
-    Response: PaymentStatus
+    Response: Payment
     """
     try:
         return payment_service.revert_payment(payment_id)
@@ -99,3 +102,7 @@ async def revert_payment(payment_id: str = FPath(..., description="Payment ID"))
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)

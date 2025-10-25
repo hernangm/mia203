@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import List
-from ..Payment import Payment
-from ..PaymentMethod import PaymentMethod
+from payments import Payment
 
 class BasePaymentMethodValidationStrategy(ABC):
     @abstractmethod
