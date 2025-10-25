@@ -1,4 +1,5 @@
 import json
+from typing import Dict
 from Payments.Payment import Payment
 from Payments.PaymentMethod import PaymentMethod, try_get_payment_method
 from Payments.PaymentValidationStrategies.PaymentMethodValidationStrategyFactory import PaymentMethodValidationStrategyFactory
@@ -10,13 +11,13 @@ class PaymentService:
     def __init__(self, data_path: str):
         """Init service and load persisted payments."""
         self.data_path = data_path
-        self.payments: dict[str, Payment] = self._load_from_disk()
+        self.payments: Dict[str, Payment] = self._load_from_disk()
 
-    def load_all_payments(self) -> dict[str, Payment]:
+    def load_all_payments(self) -> Dict[str, Payment]:
         """Return a shallow copy of payments."""
         return dict(self.payments)
 
-    def create_payment(self, payment_id: str, amount: float, payment_method) -> Payment:
+    def create_payment(self, payment_id: str, amount: float, payment_method: PaymentMethod) -> Payment:
         """Create and persist a new payment."""
         if payment_id in self.payments:
             raise ValueError("Payment with this ID already exists")
@@ -29,11 +30,16 @@ class PaymentService:
         self._save_all_payments(payment_id, new, dict(self.payments))
         return new
     
-    def update_payment(self, payment_id: str, amount: float, payment_method) -> Payment:
+    def update_payment(self, payment_id: str, amount: float, payment_method: PaymentMethod) -> Payment:
         """Update mutable fields of a registered payment."""
         payment = self._get_payment(payment_id)
         if payment.status == PaymentStatus.REGISTRADO:
             payment.amount = amount
+            if not isinstance(payment_method, PaymentMethod):
+                ok, pm = try_get_payment_method(payment_method)
+                if not ok:
+                    raise ValueError("invalid payment_method")
+                payment_method = pm
             payment.payment_method = payment_method
             self._save_all_payments(payment_id, payment, dict(self.payments))
         return payment
@@ -59,12 +65,12 @@ class PaymentService:
             self._save_all_payments(payment_id, payment, dict(self.payments))
         return payment
 
-    def _load_from_disk(self) -> dict[str, Payment]:
+    def _load_from_disk(self) -> Dict[str, Payment]:
         """Read payments from disk, skip invalid entries."""
         try:
             with open(self.data_path, "r", encoding="utf-8") as f:
                 raw_data = json.load(f)
-            payments: dict[str, Payment] = {}
+            payments: Dict[str, Payment] = {}
             for pid, p_data in (raw_data or {}).items():
                 try:
                     payments[pid] = Payment(payment_id=pid, **p_data)
@@ -80,7 +86,7 @@ class PaymentService:
             raise KeyError("Payment not found")
         return self.payments[payment_id]
     
-    def _save_all_payments(self, payment_id: str, payment: Payment, payments_dict: dict | None = None) -> None:
+    def _save_all_payments(self, payment_id: str, payment: Payment, payments_dict: Dict[str, Payment]) -> None:
         """Persist payments to disk (overwrites file)."""
         if payments_dict is None:
             payments_dict = self.payments

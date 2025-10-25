@@ -3,6 +3,8 @@ from pathlib import Path
 from fastapi import FastAPI, HTTPException, Path as FPath, Query, status
 
 from Payments.PaymentService import PaymentService
+from typing import List, Any
+from Payments.Payment import Payment
 
 # Ensure a reproducible data path relative to this file
 _data_dir = Path(__file__).resolve().parent / "data"
@@ -14,7 +16,7 @@ payment_service = PaymentService(_data_file)
 
 
 @app.get("/payments")
-async def get_all_payments():
+async def get_all_payments() -> List[Payment]:
     """
     Returns a list of all payments.
     Response: List[Payment]
@@ -30,7 +32,7 @@ async def create_payment(
     payment_id: str = FPath(..., description="Payment ID"),
     amount: float = Query(..., description="Payment amount"),
     payment_method: str = Query(..., description="Payment method"),
-):
+) -> Payment:
     """
     Registers a new payment.
     Request: {amount: float, payment_method: str}
@@ -51,7 +53,7 @@ async def update_payment(
     payment_id: str = FPath(..., description="Payment ID"),
     amount: float | None = None,
     payment_method: str | None = None,
-):
+) -> Payment:
     """
     Updates payment parameters.
     Request: {amount: float?, payment_method: str?}
@@ -68,7 +70,7 @@ async def update_payment(
 
 
 @app.post("/payments/{payment_id}/pay")
-async def pay_payment(payment_id: str = FPath(..., description="Payment ID")):
+async def pay_payment(payment_id: str = FPath(..., description="Payment ID")) -> Payment:
     """
     Attempts to process the payment.
     Response: PaymentStatus
@@ -84,7 +86,7 @@ async def pay_payment(payment_id: str = FPath(..., description="Payment ID")):
 
 
 @app.post("/payments/{payment_id}/revert")
-async def revert_payment(payment_id: str = FPath(..., description="Payment ID")):
+async def revert_payment(payment_id: str = FPath(..., description="Payment ID")) -> Payment:
     """
     Reverts the payment if possible.
     Response: PaymentStatus
