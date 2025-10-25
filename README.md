@@ -18,12 +18,14 @@ La documentacion esta disponible en: [https://mia203.onrender.com/docs](https://
 ## Cómo instalar la aplicación
 
 1. **Clona el repositorio**
+
 ```bash
 git clone https://github.com/hernangm/mia203.git
 cd mia203
 ```
 
 2. **Crea y activa un entorno virtual** (Opcional pero recomendado)
+
 En Windows:
 ```bash
 python -m venv venv
@@ -36,17 +38,20 @@ source venv/bin/activate
 ```
 
 3. **Instalar dependencias**
+
 ```bash
 python -m pip install --upgrade pip
 pip install -r src/requirements.txt
 ```
 
 ## Cómo ejecutar la aplicación
+
 ```bash
-FALTA
+uvicorn main:app --reload
 ```
 
 ## Cómo correr los tests
+
 ```bash
-FALTA
+pytest src/tests
 ```
