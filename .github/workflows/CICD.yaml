@@ -60,30 +60,21 @@ jobs:
     - name: Run tests with coverage
       run: python -m pytest --cov=src/tests
 
+    - name: Checkout badge branch
+      run: |
+        git fetch origin gh-pages || true
+        git checkout gh-pages || git checkout -b gh-pages
+
     - name: Coverage Badge
       uses: tj-actions/coverage-badge-py@v2
 
-    - name: Verify Changed files
-      uses: tj-actions/verify-changed-files@a1c6acee9df209257a246f2cc6ae8cb6581c1edf # v20
-      id: verify-changed-files
-      with:
-        files: coverage.svg
-
-    - name: Commit files
-      if: steps.verify-changed-files.outputs.files_changed == 'true'
+    - name: Commit coverage badge to branch
       run: |
-        git config --local user.email "github-actions[bot]@users.noreply.github.com"
-        git config --local user.name "github-actions[bot]"
-        git checkout gh-pages
-        git add coverage.svg
-        git commit -m "Updated coverage.svg"
-
-    - name: Push changes
-      if: steps.verify-changed-files.outputs.files_changed == 'true'
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.github_token }}
-        branch: ${{ github.ref }}
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add coverage.svg
+          git commit -m "chore: update coverage badge" || echo "No changes to commit"
+          git push origin HEAD
 
     - name: Lint with flake8
       run: |
