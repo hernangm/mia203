@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException, Path, Query
-from paymentService import paymentService as ps
+from paymentService import PaymentService
 from constants import (
 	STATUS,
 	AMOUNT,
@@ -11,12 +11,13 @@ from constants import (
 )
 
 app = FastAPI()
+payment_service = PaymentService(DATA_PATH)
 
 
 @app.get("/payments")   
 async def get_payments():
 	"""Obtiene todos los pagos del sistema."""
-	return ps.load_all_payments()
+	return payment_service.load_all_payments()
 
 
 @app.post("/payments/{payment_id}")
@@ -32,11 +33,11 @@ async def register_payment(
 		amount: monto (query)
 		payment_method: método (query)
 	"""
-	payments = ps.load_all_payments()
+	payments = payment_service.load_all_payments()
 	pid = str(payment_id)
 	if pid in payments:
 		raise HTTPException(status_code=400, detail="Payment already exists")
-	ps.save_payment(pid, amount, payment_method, STATUS_REGISTRADO)
+	payment_service.save_payment(pid, amount, payment_method, STATUS_REGISTRADO)
 	return {"payment_id": pid, AMOUNT: amount, PAYMENT_METHOD: payment_method, STATUS: STATUS_REGISTRADO}
 
 
@@ -47,37 +48,37 @@ async def update_payment(
 	payment_method: str = Query(..., description="Nuevo método de pago"),
 ):
 	"""Actualiza la información de un pago existente."""
-	payments = ps.load_all_payments()
+	payments = payment_service.load_all_payments()
 	pid = str(payment_id)
 	if pid not in payments:
 		raise HTTPException(status_code=404, detail="Payment not found")
 	payments[pid][AMOUNT] = amount
 	payments[pid][PAYMENT_METHOD] = payment_method
-	ps.save_all_payments(payments)
+	payment_service.save_all_payments(payments)
 	return payments[pid]
 
 
 @app.post("/payments/{payment_id}/pay")
 async def pay_payment(payment_id: str = Path(..., description="ID del pago")):
 	"""Marca un pago como pagado."""
-	payments = ps.load_all_payments()
+	payments = payment_service.load_all_payments()
 	pid = str(payment_id)
 	if pid not in payments:
 		raise HTTPException(status_code=404, detail="Payment not found")
 	if payments[pid].get(STATUS) == STATUS_PAGADO:
 		raise HTTPException(status_code=400, detail="Payment already paid")
 	payments[pid][STATUS] = STATUS_PAGADO
-	ps.save_all_payments(payments)
+	payment_service.save_all_payments(payments)
 	return payments[pid]
 
 
 @app.post("/payments/{payment_id}/revert")
 async def revert_payment(payment_id: str = Path(..., description="ID del pago")):
 	"""Revierte un pago al estado registrado."""
-	payments = ps.load_all_payments()
+	payments = payment_service.load_all_payments()
 	pid = str(payment_id)
 	if pid not in payments:
 		raise HTTPException(status_code=404, detail="Payment not found")
 	payments[pid][STATUS] = STATUS_REGISTRADO
-	ps.save_all_payments(payments)
+	payment_service.save_all_payments(payments)
 	return payments[pid]
