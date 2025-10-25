@@ -63,10 +63,10 @@ jobs:
     - name: Coverage Badge
       uses: tj-actions/coverage-badge-py@v2
 
-    - name: Commit badge to badges branch
+    - name: Commit badge to gh-pages branch
       run: |
-        git fetch origin badges || true
-        git checkout badges || git checkout -b badges
+        git fetch origin gh-pages || true
+        git checkout gh-pages || git checkout -b gh-pages
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git mv coverage.svg coverage.svg  # move it into the branch
