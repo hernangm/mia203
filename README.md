@@ -1,8 +1,9 @@
 # Proyecto MIA203
 
-[![Main](https://github.com/hernangm/mia203/actions/workflows/CICD.yaml/badge.svg?branch=main)](https://github.com/hernangm/mia203/actions/workflows/CICD.yaml)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/hernangm/mia203/CICD.yaml?branch=main&label=Main)
 
-[![Production](https://github.com/hernangm/mia203/actions/workflows/CICD.yaml/badge.svg?branch=production)](https://github.com/hernangm/mia203/actions/workflows/CICD.yaml)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/hernangm/mia203/CICD.yaml?branch=production&label=Production)
+
 
 La API está disponible en [https://mia203.onrender.com](https://mia203-api.onrender.com)
 
