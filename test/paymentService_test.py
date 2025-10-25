@@ -1,8 +1,14 @@
+import sys
+import os
 import unittest
 from unittest.mock import patch, mock_open, MagicMock
 import json
 
-from PaymentService import PaymentService
+# Añade el directorio raíz del proyecto al sys.path
+# Esto permite que Python encuentre los módulos 'paymentService' y 'Payment'
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from paymentService import PaymentService
 from Payment import Payment
 
 
@@ -45,7 +51,9 @@ class TestPaymentService(unittest.TestCase):
 
         # Verifica que se haya escrito JSON válido
         handle = mock_file()
-        written_data = json.loads(handle.write.call_args[0][0])
+        # Concatena todas las llamadas a write() para obtener el contenido completo del archivo
+        full_written_content = "".join(call.args[0] for call in handle.write.call_args_list)
+        written_data = json.loads(full_written_content)
         self.assertIn("1", written_data)
         self.assertEqual(written_data["1"]["status"], "REGISTRADO")
 
