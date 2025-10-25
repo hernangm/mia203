@@ -1,8 +1,8 @@
 from typing import Optional
-from PayPalValidationStrategy import PayPalValidationStrategy
-from CreditCardValidationStrategy import CreditCardValidationStrategy
-from PaymentMethod import PaymentMethod
-from BasePaymentMethodValidationStrategy import BasePaymentMethodValidationStrategy
+from .PayPalValidationStrategy import PayPalValidationStrategy
+from .CreditCardValidationStrategy import CreditCardValidationStrategy
+from ..PaymentMethod import PaymentMethod
+from .BasePaymentMethodValidationStrategy import BasePaymentMethodValidationStrategy
 
 class PaymentMethodValidationStrategyFactory:
     def __init__(self) -> None:
@@ -12,6 +12,6 @@ class PaymentMethodValidationStrategyFactory:
         }
 
     def get(self, payment_method: PaymentMethod) -> Optional[BasePaymentMethodValidationStrategy]:
-        """Devuelve la estrategia correspondiente o None si no existe."""
+        """Return the corresponding strategy or None if it does not exist."""
         return self._registry.get(payment_method)
 

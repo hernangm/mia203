@@ -14,8 +14,11 @@ payment_service = PaymentService(_data_file)
 
 
 @app.get("/payments")
-async def get_payments():
-    """Retrieve all payments in the system."""
+async def get_all_payments():
+    """
+    Returns a list of all payments.
+    Response: List[Payment]
+    """
     try:
         return payment_service.load_all_payments()
     except Exception as e:
@@ -23,14 +26,18 @@ async def get_payments():
 
 
 @app.post("/payments/{payment_id}", status_code=status.HTTP_201_CREATED)
-async def register_payment(
+async def create_payment(
     payment_id: str = FPath(..., description="Payment ID"),
     amount: float = Query(..., description="Payment amount"),
     payment_method: str = Query(..., description="Payment method"),
 ):
-    """Register a payment with its information."""
+    """
+    Registers a new payment.
+    Request: {amount: float, payment_method: str}
+    Response: Payment
+    """
     try:
-        return payment_service.register_payment(payment_id, amount, payment_method)
+        return payment_service.create_payment(payment_id, amount, payment_method)
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
     except KeyError as e:
@@ -42,10 +49,14 @@ async def register_payment(
 @app.post("/payments/{payment_id}/update")
 async def update_payment(
     payment_id: str = FPath(..., description="Payment ID"),
-    amount: float = Query(..., description="New amount"),
-    payment_method: str = Query(..., description="New payment method"),
+    amount: float | None = None,
+    payment_method: str | None = None,
 ):
-    """Update the information of an existing payment."""
+    """
+    Updates payment parameters.
+    Request: {amount: float?, payment_method: str?}
+    Response: Payment
+    """
     try:
         return payment_service.update_payment(payment_id, amount, payment_method)
     except ValueError as e:
@@ -58,7 +69,10 @@ async def update_payment(
 
 @app.post("/payments/{payment_id}/pay")
 async def pay_payment(payment_id: str = FPath(..., description="Payment ID")):
-    """Mark a payment as paid."""
+    """
+    Attempts to process the payment.
+    Response: PaymentStatus
+    """
     try:
         return payment_service.pay_payment(payment_id)
     except ValueError as e:
@@ -71,7 +85,10 @@ async def pay_payment(payment_id: str = FPath(..., description="Payment ID")):
 
 @app.post("/payments/{payment_id}/revert")
 async def revert_payment(payment_id: str = FPath(..., description="Payment ID")):
-    """Revert a payment back to the registered state."""
+    """
+    Reverts the payment if possible.
+    Response: PaymentStatus
+    """
     try:
         return payment_service.revert_payment(payment_id)
     except ValueError as e:

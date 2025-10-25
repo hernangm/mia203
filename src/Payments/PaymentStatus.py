@@ -1,8 +1,6 @@
 from enum import Enum
 from typing import Optional, Tuple
 
-from PaymentMethod import parse_payment_method
-
 class PaymentStatus(str, Enum):
     REGISTRADO = "REGISTRADO"
     PAGADO = "PAGADO"
