@@ -1,6 +1,6 @@
 from typing import List
-from ..Payment import Payment
-from ..PaymentMethod import PaymentMethod
+from Payments.Payment import Payment
+from Payments.PaymentMethod import PaymentMethod
 from .BasePaymentMethodValidationStrategy import BasePaymentMethodValidationStrategy
 
 
