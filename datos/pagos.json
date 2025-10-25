@@ -1,62 +1,57 @@
-[
-  {
-    "payment_id": "001",
-    "amount": 4000.0,
-    "payment_method": "paypal",
-    "status": "REGISTRADO"
-  },
-  {
-    "payment_id": "002",
-    "amount": 2500.0,
-    "payment_method": "paypal",
-    "status": "PAGADO"
-  },
-  {
-    "payment_id": "003",
-    "amount": 5200.0,
-    "payment_method": "paypal",
-    "status": "FALLIDO"
-  },
-  {
-    "payment_id": "004",
-    "amount": 8900.0,
-    "payment_method": "credit_card",
-    "status": "REGISTRADO"
-  },
-  {
-    "payment_id": "005",
-    "amount": 9700.0,
-    "payment_method": "credit_card",
-    "status": "PAGADO"
-  },
-  {
-    "payment_id": "006",
-    "amount": 12000.0,
-    "payment_method": "credit_card",
-    "status": "FALLIDO"
-  },
-  {
-    "payment_id": "007",
-    "amount": 4800.0,
-    "payment_method": "paypal",
-    "status": "REGISTRADO"
-  },
-  {
-    "payment_id": "008",
-    "amount": 1500.0,
-    "payment_method": "paypal",
-    "status": "PAGADO"
-  },
-  {
-    "payment_id": "009",
-    "amount": 10200.0,
-    "payment_method": "credit_card",
-    "status": "FALLIDO"
-  },
-  {
-    "payment_id": "010",
-    "amount": 8300.0,
-    "payment_method": "credit_card",
-    "status": "REGISTRADO"
-  }
-]
+{
+    "001": {
+        "amount": 4000.0,
+        "payment_method": "paypal",
+        "status": "REGISTRADO"
+    },
+    "002": {
+        "amount": 2500.0,
+        "payment_method": "paypal",
+        "status": "PAGADO"
+    },
+    "003": {
+        "amount": 5200.0,
+        "payment_method": "paypal",
+        "status": "FALLIDO"
+    },
+    "004": {
+        "amount": 8900.0,
+        "payment_method": "credit_card",
+        "status": "REGISTRADO"
+    },
+    "005": {
+        "amount": 9700.0,
+        "payment_method": "credit_card",
+        "status": "PAGADO"
+    },
+    "006": {
+        "amount": 12000.0,
+        "payment_method": "credit_card",
+        "status": "FALLIDO"
+    },
+    "007": {
+        "amount": 4800.0,
+        "payment_method": "paypal",
+        "status": "REGISTRADO"
+    },
+    "008": {
+        "amount": 1500.0,
+        "payment_method": "paypal",
+        "status": "PAGADO"
+    },
+    "009": {
+        "amount": 10200.0,
+        "payment_method": "credit_card",
+        "status": "FALLIDO"
+    },
+    "010": {
+        "amount": 8300.0,
+        "payment_method": "credit_card",
+        "status": "REGISTRADO"
+    },
+    "123": {
+        "amount": 15.0,
+        "payment_method": "paypal",
+        "status": "REGISTRADO"
+    }
+}

@@ -11,8 +11,8 @@ class PaymentService:
         try:
             with open(self.data_path, "r", encoding="utf-8") as f:
                 raw_data = json.load(f)
-                # Convierte cada diccionario de pago en un objeto Payment
-                return {pid: Payment(**p_data) for pid, p_data in raw_data.items()} # Assumes raw_data is a dict. If raw_data is a list, this line needs to be changed to: {p_data["payment_id"]: Payment(**p_data) for p_data in raw_data}
+            # Itera sobre los pares (id, datos) del diccionario y crea objetos Payment
+            return {pid: Payment(payment_id=pid, **p_data) for pid, p_data in raw_data.items()}
         except FileNotFoundError:
             return {}
 
@@ -46,7 +46,7 @@ class PaymentService:
         validationStrategy = paymentStrategyFactory.get(payment.payment_method)
         if not validationStrategy:
             raise ValueError("Invalid payment method")
-        if validationStrategy.validate(payment, list(payments.values())):
+        if validationStrategy(payment, list(payments.values())):
             payment.status = constants.STATUS_PAGADO
         else:
             payment.status = constants.STATUS_FALLIDO
