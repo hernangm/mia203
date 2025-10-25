@@ -4,16 +4,14 @@
 
 [![Production](https://github.com/hernangm/mia203/actions/workflows/CICD.yaml/badge.svg?branch=production)](https://github.com/hernangm/mia203/actions/workflows/CICD.yaml)
 
-La API está disponible en: [https://mia203.onrender.com](https://mia203-api.onrender.com)
+La API está disponible en [https://mia203.onrender.com](https://mia203-api.onrender.com)
 
-La documentacion esta disponible en: [https://mia203.onrender.com/docs](https://mia203.onrender.com/docs)
+La documentacion esta disponible en [https://mia203.onrender.com/docs](https://mia203.onrender.com/docs)
 
 ## Integrantes
 
 - María Luisa Boettner
 - Hernán Marano
-
-## Instrucciones para correr el desarrollo y los tests
 
 ## Cómo instalar la aplicación
 
