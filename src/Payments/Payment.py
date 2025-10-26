@@ -1,6 +1,6 @@
 from pydantic import BaseModel
-from Payments.PaymentMethod import PaymentMethod
-from Payments.PaymentStatus import PaymentStatus
+from .payment_method import PaymentMethod
+from .payment_status import PaymentStatus
 
 class Payment(BaseModel):
     """

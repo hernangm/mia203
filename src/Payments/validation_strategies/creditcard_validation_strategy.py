@@ -1,6 +1,7 @@
 from typing import List
-from payments import Payment, PaymentStatus
-from payments.validation_strategies import BasePaymentMethodValidationStrategy
+from ..payment import Payment
+from ..payment_status import PaymentStatus
+from .base_payment_method_validation_strategy import BasePaymentMethodValidationStrategy
 
 
 class CreditCardValidationStrategy(BasePaymentMethodValidationStrategy):

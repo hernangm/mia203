@@ -1,6 +1,6 @@
 from typing import List
-from payments import Payment
-from payments.validation_strategies import BasePaymentMethodValidationStrategy
+from ..payment import Payment
+from .base_payment_method_validation_strategy import BasePaymentMethodValidationStrategy
 
 class PayPalValidationStrategy(BasePaymentMethodValidationStrategy):
     """

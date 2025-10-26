@@ -1,7 +1,9 @@
 import json
 from typing import Dict, Union, Optional
-from payments import Payment, PaymentMethod, PaymentStatus, try_get_payment_method
-from payments.validation_strategies import PaymentMethodValidationStrategyFactory
+from .payment import Payment
+from .payment_method import PaymentMethod, try_get_payment_method
+from .payment_status import PaymentStatus
+from .validation_strategies import PaymentMethodValidationStrategyFactory
 
 _validation_factory = PaymentMethodValidationStrategyFactory()
 

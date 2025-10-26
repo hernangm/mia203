@@ -1,49 +1,41 @@
-import sys
-from pathlib import Path
-# Make the repository "src" folder importable when running the test file directly.
-# Path(__file__).resolve().parents[1] -> .../src
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-
 import json
 import pytest
 from pathlib import Path
-
-from payments import PaymentService, PaymentStatus
-
-
+from dataclasses import dataclass
+from typing import Any
+from payments import PaymentService, PaymentStatus, PaymentMethod
+@dataclass
 class SimplePayment:
-    def __init__(self, payment_id, amount, payment_method, status):
-        self.payment_id = payment_id
-        self.amount = amount
-        self.payment_method = payment_method
-        self.status = status
+    payment_id: str
+    amount: float
+    payment_method: Any
+    status: Any
+
+    def __repr__(self) -> str:
+        return f"<SimplePayment id={self.payment_id} amount={self.amount!r}>"
 
     # Serialization hook used by PaymentService._save_all_payments
-    def model_dump(self):
+    def model_dump(self) -> dict:
         return {
             "payment_id": self.payment_id,
-            "amount": self.amount,
-            "payment_method": str(self.payment_method),
-            "status": self.status.name if hasattr(self.status, "name") else str(self.status),
+            "amount": float(self.amount),
+            # If payment_method is an enum, prefer its name; fallback to string
+            "payment_method": getattr(self.payment_method, "name", str(self.payment_method)),
+            "status": getattr(self.status, "name", str(self.status)),
         }
-
-
-class FakePM:
-    def __repr__(self):
-        return "<FakePM>"
 
 
 def setup_simple_env(monkeypatch):
     """
-    Monkeypatch PaymentService dependencies to use simple mock classes for isolated testing.
+    Monkeypatch payments module dependencies to use simple mock classes for isolated testing.
     """
+    import payments
     # make PaymentService use simple classes so tests don't depend on other modules
-    monkeypatch.setattr(PaymentService, "Payment", SimplePayment)
+    monkeypatch.setattr(payments, "Payment", SimplePayment, raising=False)
     # PaymentMethod type used for isinstance checks
-    PMClass = FakePM
-    monkeypatch.setattr(PaymentService, "PaymentMethod", PMClass)
+    monkeypatch.setattr(payments, "PaymentMethod", PaymentMethod, raising=False)
     # try_get_payment_method returns a tuple (ok, instance)
-    monkeypatch.setattr(PaymentService, "try_get_payment_method", lambda v: (True, PMClass()))
+    monkeypatch.setattr(payments, "try_get_payment_method", lambda v: (True, PaymentMethod.CREDIT_CARD), raising=False)
 
 
 def read_payments_file(path: Path) -> dict:
@@ -64,12 +56,12 @@ def test_create_payment_succeeds(tmp_path, monkeypatch):
     data_file = tmp_path / "payments.json"
     svc = PaymentService(str(data_file))
 
-    created = svc.create_payment("p1", 10.5, "card")
+    created = svc.create_payment("p1", 10.5, PaymentMethod.CREDIT_CARD)
 
     # returned object fields
     assert created.payment_id == "p1"
     assert created.amount == 10.5
-    assert isinstance(created.payment_method, FakePM)
+    assert isinstance(created.payment_method, PaymentMethod)
     assert created.status == PaymentStatus.REGISTRADO
 
     # persisted to disk
@@ -88,7 +80,7 @@ def test_create_payment_duplicate_id_raises(tmp_path, monkeypatch):
     data_file = tmp_path / "payments.json"
     svc = PaymentService(str(data_file))
 
-    svc.create_payment("p1", 5.0, "card")
+    svc.create_payment("p1", 5.0, PaymentMethod.CREDIT_CARD)
 
     with pytest.raises(ValueError):
-        svc.create_payment("p1", 7.0, "card")
+        svc.create_payment("p1", 7.0, PaymentMethod.CREDIT_CARD)

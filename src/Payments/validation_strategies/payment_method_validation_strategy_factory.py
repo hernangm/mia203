@@ -1,6 +1,6 @@
 from typing import Optional, Dict
-from payments import PaymentMethod
-from payments.validation_strategies import BasePaymentMethodValidationStrategy, PayPalValidationStrategy, CreditCardValidationStrategy
+from ..payment_method import PaymentMethod
+from . import BasePaymentMethodValidationStrategy, PayPalValidationStrategy, CreditCardValidationStrategy
 
 class PaymentMethodValidationStrategyFactory:
     """
@@ -15,4 +15,3 @@ class PaymentMethodValidationStrategyFactory:
     def get(self, payment_method: PaymentMethod) -> Optional[BasePaymentMethodValidationStrategy]:
         """Return the corresponding strategy or None if it does not exist."""
         return self._registry.get(payment_method)
-

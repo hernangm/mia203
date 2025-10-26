@@ -10,10 +10,12 @@ dependencies = [
     "uvicorn[standard]>=0.23.0",
     "pydantic>=2.0.0"
 ]
+license = { file = "LICENSE" } # Add a license field for clarity
 
 [project.optional-dependencies]
 test = [
-    "pytest>=7.0.0"
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0" # Add coverage tool for better testing
 ]
 
 [build-system]
