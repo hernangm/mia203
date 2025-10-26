@@ -31,7 +31,7 @@ jobs:
         pip install -r src/requirements.txt
 
     - name: Run tests with coverage
-      run: python -m pytest --cov=src/tests
+      run: python -m pytest --rootdir=src --cov=src/tests
 
     - name: Coverage Badge
       uses: tj-actions/coverage-badge-py@v2
