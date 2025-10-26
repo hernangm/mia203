@@ -39,7 +39,7 @@ source venv/bin/activate
 
 ```bash
 python -m pip install --upgrade pip
-pip install -r src/requirements.txt
+pip install .
 ```
 
 ## Ejecuta la aplicación
@@ -51,5 +51,9 @@ uvicorn main:app --reload
 ## Corre los tests
 
 ```bash
-pytest src/tests
+pip install .[test]
+```
+
+```bash
+python -m pytest src/tests
 ```
