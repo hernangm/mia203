@@ -46,7 +46,7 @@ jobs:
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git add coverage.svg
         git commit -m "chore: update coverage badge" || echo "No changes to commit"
-        git pull --rebase origin gh-pages || true
+        git pull --rebase origin gh-pages --strategy=ours || true
         git push origin HEAD
 
     - name: Lint with flake8
