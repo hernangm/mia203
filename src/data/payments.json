@@ -1,69 +1,72 @@
 {
-
     "001": {
-        "payment_id": "001",
         "amount": 4000.0,
         "payment_method": "PAYPAL",
         "status": "REGISTRADO"
     },
     "002": {
-        "payment_id": "002",
         "amount": 2500.0,
         "payment_method": "PAYPAL",
         "status": "PAGADO"
     },
     "003": {
-        "payment_id": "003",
         "amount": 5200.0,
         "payment_method": "PAYPAL",
         "status": "FALLIDO"
     },
     "004": {
-        "payment_id": "004",
         "amount": 8900.0,
         "payment_method": "CREDIT_CARD",
         "status": "REGISTRADO"
     },
     "005": {
-        "payment_id": "005",
         "amount": 9700.0,
         "payment_method": "CREDIT_CARD",
         "status": "PAGADO"
     },
     "006": {
-        "payment_id": "006",
         "amount": 12000.0,
         "payment_method": "CREDIT_CARD",
         "status": "FALLIDO"
     },
     "007": {
-        "payment_id": "007",
         "amount": 4800.0,
         "payment_method": "PAYPAL",
         "status": "REGISTRADO"
     },
     "008": {
-        "payment_id": "008",
         "amount": 1500.0,
         "payment_method": "PAYPAL",
         "status": "PAGADO"
     },
     "009": {
-        "payment_id": "009",
         "amount": 10200.0,
         "payment_method": "CREDIT_CARD",
         "status": "FALLIDO"
     },
     "010": {
-        "payment_id": "010",
         "amount": 8300.0,
         "payment_method": "CREDIT_CARD",
-        "status": "FALLIDO"
+        "status": "REGISTRADO"
     },
     "123": {
-        "payment_id": "123",
         "amount": 15.0,
         "payment_method": "PAYPAL",
+        "status": "REGISTRADO"
+    },
+    "150": {
+        "amount": 1000.0,
+        "payment_method": "PAYPAL",
         "status": "PAGADO"
-    }   
+    },
+    "180": {
+        "amount": 1000.0,
+        "payment_method": "PAYPAL",
+        "status": "REGISTRADO"
+    },
+    "190": {
+        "amount": 4000.0,
+        "payment_method": "CREDIT_CARD",
+        "status": "REGISTRADO"
+    }
 }

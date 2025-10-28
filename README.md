@@ -1,33 +1,59 @@
+# Proyecto MIA203
 
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/hernangm/mia203/CICD.yaml?branch=main&label=Main)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/hernangm/mia203/CICD.yaml?branch=production&label=Production)
+![Coverage](https://hernangm.github.io/mia203/coverage.svg)
 
-“””
-# Ejemplo de uso:
-# Actualizando el status de un pago:
-data = load_payment(payment_id)
-data[STATUS] = STATUS_PAGADO
-save_payment_data(payment_id, data)
-“””
+La API está disponible en [https://mia203.onrender.com](https://mia203-api.onrender.com)
 
+La documentación está disponible en [https://mia203.onrender.com/docs](https://mia203.onrender.com/docs)
 
+## Integrantes
 
-# Endpoints a implementar:
-# * GET en el path /payments que retorne todos los pagos.
-# * POST en el path /payments/{payment_id} que registre un nuevo pago.
-# * POST en el path /payments/{payment_id}/update que cambie los parametros de una pago (amount, payment_method)
-# * POST en el path /payments/{payment_id}/pay que intente.
-# * POST en el path /payments/{payment_id}/revert que revertir el pago.
+- María Luisa Boettner
+- Hernán Marano
 
+## Cómo instalar la aplicación
 
-“””
-# Ejemplos:
+1. **Clona el repositorio**
 
-@app.get("/path/{arg_1}")
-async def endpoint_a(arg_1: str, arg_2: float):
-    # Este es un endpoint GET que recibe un argumento (arg_1) por path y otro por query (arg_2).
-    return {}
+```bash
+git clone https://github.com/hernangm/mia203.git
+cd mia203
+```
 
-@app.post("/path/{arg_1}/some_action")
-async def endpoint_b(arg_1: str, arg_2: float, arg_3: str):
-    # Este es un endpoint POST que recibe un argumento (arg_1) por path y otros dos por query (arg_2 y arg_3).
-    return {}
-“””
+2. **Crea y activa un entorno virtual** (Opcional pero recomendado)
+
+En Windows:
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
+En Linux/Mac:
+```bash
+python -m venv venv
+source venv/bin/activate
+```
+
+3. **Instala dependencias**
+
+```bash
+python -m pip install --upgrade pip
+pip install .
+```
+
+## Ejecuta la aplicación
+
+```bash
+uvicorn main:app --reload
+```
+
+## Corre los tests
+
+```bash
+pip install .[test]
+```
+
+```bash
+python -m pytest src/tests
+```

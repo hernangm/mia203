@@ -4,7 +4,7 @@ from .payment import Payment
 from .payment_method import PaymentMethod, try_get_payment_method
 from .payment_status import PaymentStatus
 from .validation_strategies import PaymentMethodValidationStrategyFactory
-
+import os
 _validation_factory = PaymentMethodValidationStrategyFactory()
 
 class PaymentService:
@@ -82,10 +82,16 @@ class PaymentService:
             for pid, p_data in (raw_data or {}).items():
                 try:
                     payments[pid] = Payment(payment_id=pid, **p_data)
-                except Exception:
+                except Exception as e:
                     continue
+
             return payments
+
         except FileNotFoundError:
+            return {}
+        except json.JSONDecodeError as e:
+            return {}
+        except Exception as e:
             return {}
 
     def _get_payment(self, payment_id: str) -> Payment:
@@ -99,12 +105,18 @@ class PaymentService:
         payments_dict[payment_id] = payment
         self.payments = payments_dict
         serializable_data = {}
+
         for pid, p in self.payments.items():
             if hasattr(p, "model_dump"):
-                serializable_data[pid] = p.model_dump()
+                data = p.model_dump()
             elif hasattr(p, "dict"):
-                serializable_data[pid] = p.dict()
+                data = p.dict()  # type: ignore[attr-defined]
             else:
-                serializable_data[pid] = vars(p)
+                data = vars(p)
+
+            data.pop("payment_id", None)
+
+            serializable_data[pid] = data
+
         with open(self.data_path, "w", encoding="utf-8") as f:
             json.dump(serializable_data, f, indent=4, ensure_ascii=False)
