@@ -6,9 +6,9 @@ from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Path as FPath, Query, status
 
-from Payments.PaymentService import PaymentService
+from payments.payment_service import PaymentService
 from typing import List
-from Payments.Payment import Payment
+from payments.payment import Payment
 
 _data_dir = Path(__file__).resolve().parent / "data"
 _data_dir.mkdir(exist_ok=True)
@@ -17,6 +17,9 @@ _data_file = str(_data_dir / "payments.json")
 app = FastAPI()
 payment_service = PaymentService(_data_file)
 
+@app.get("/")
+def root():
+    return {"message": "Payments API is running!"}
 
 @app.get("/payments", response_model=List[Payment])
 async def get_all_payments() -> List[Payment]:
@@ -25,7 +28,8 @@ async def get_all_payments() -> List[Payment]:
     Response: List[Payment]
     """
     try:
-        return payment_service.load_all_payments()
+        payments_dict = payment_service.load_all_payments()
+        return list(payments_dict.values())  
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
