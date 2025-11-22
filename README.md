@@ -48,6 +48,17 @@ sequenceDiagram
     API-->>Usuario: Respuesta (éxito/error)
 ```
 
+## Tests
+
+El proyecto incluye una batería de tests unitarios ubicados en la carpeta `src/tests`. Estos tests verifican el correcto funcionamiento de las estrategias de validación de métodos de pago y la fábrica de estrategias.
+
+### ¿Qué se prueba?
+
+- **Estrategias de validación:** Se testean las clases que implementan la lógica de validación para cada método de pago (por ejemplo, PayPal y tarjeta de crédito).
+- **Factory de estrategias:** Se verifica que la clase `PaymentMethodValidationStrategyFactory` retorne la estrategia adecuada según el método de pago solicitado y que maneje correctamente métodos desconocidos.
+- **Cobertura mínima:** El workflow de CI exige al menos 3 tests unitarios ejecutados en cada Pull Request hacia la rama `main`.
+
+
 ## Integración y Despliegue Continuos (CI/CD)
 
 El proyecto utiliza GitHub Actions para automatizar los procesos de integración y despliegue continuo. El archivo de configuración `.github/workflows/CICD.yaml` define dos flujos principales:
