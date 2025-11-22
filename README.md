@@ -27,7 +27,15 @@ Se eligió implementar el patrón Strategy para la validación de métodos de pa
 
 En resumen, el patrón Strategy fue elegido para favorecer la modularidad, la escalabilidad y la claridad en la lógica de validación de pagos, alineándose con buenas prácticas de diseño orientado a objetos.
 
-### Flujo de Validación
+### Uso del Patrón Factory Method
+
+La clase `PaymentMethodValidationStrategyFactory` implementa el patrón Factory Method para instanciar la estrategia de validación adecuada según el método de pago seleccionado. Esto permite desacoplar la lógica de creación de objetos y facilita la extensión del sistema para soportar nuevos métodos de pago sin modificar el código existente.
+
+### Uso del Patrón Enum
+
+El uso de la clase `PaymentMethod` como un `Enum` define de manera clara y segura los métodos de pago soportados por la aplicación. Esto ayuda a evitar errores por valores inválidos y mejora la legibilidad y mantenibilidad del código.
+
+## Flujo de Validación
 
 ```mermaid
 sequenceDiagram
