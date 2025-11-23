@@ -18,6 +18,8 @@ La documentación está disponible en [https://mia203.onrender.com/docs](https:/
 ### Uso del Patrón Strategy para Validación
 
 Se eligió implementar el patrón Strategy para la validación de métodos de pago por las siguientes razones:
+Se adjunta un diagrama de la implementacion de la estrategia 
+[Documento del Strategy Pattern](StrategyPattern_Validacion_MetodoPago.pdf)
 
 - **Extensibilidad:** Permite agregar fácilmente nuevos métodos de pago y sus validaciones específicas sin modificar el código existente. Cada método de pago tiene su propia estrategia de validación encapsulada en una clase independiente.
 - **Separación de responsabilidades:** La lógica de validación de cada método de pago está aislada, lo que facilita el mantenimiento y la comprensión del código.
