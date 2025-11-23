@@ -57,13 +57,18 @@ El proyecto incluye una batería de tests unitarios ubicados en la carpeta `src/
 ### ¿Qué se prueba?
 
 - **Estrategias de validación:** Se testean las clases que implementan la lógica de validación para cada método de pago (por ejemplo, PayPal y tarjeta de crédito).
+
 PayPalValidationStrategy:
+
 -Acepta montos inferiores a 5000.
 -Rechaza montos iguales o superiores a dicho límite.
+
 CreditCardValidationStrategy
+
 -Requiere montos inferiores a 10.000.
 -Exige que exista exactamente un pago registrado previo del mismo método.
 -Rechaza pagos sin historial o con un número incorrecto de registros previos.
+
 - **Factory de estrategias:** Se verifica que la clase `PaymentMethodValidationStrategyFactory` retorne la estrategia adecuada según el método de pago solicitado y que maneje correctamente métodos desconocidos.
 - **Cobertura mínima:** El workflow de CI exige al menos 3 tests unitarios ejecutados en cada Pull Request hacia la rama `main`.
 
