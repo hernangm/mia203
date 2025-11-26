@@ -18,6 +18,8 @@ La documentación está disponible en [https://mia203.onrender.com/docs](https:/
 ### Uso del Patrón Strategy para Validación
 
 Se eligió implementar el patrón Strategy para la validación de métodos de pago por las siguientes razones:
+Se adjunta un diagrama de la implementacion de la estrategia 
+[Documento del Strategy Pattern](StrategyPattern_Validacion_MetodoPago.pdf)
 
 - **Extensibilidad:** Permite agregar fácilmente nuevos métodos de pago y sus validaciones específicas sin modificar el código existente. Cada método de pago tiene su propia estrategia de validación encapsulada en una clase independiente.
 - **Separación de responsabilidades:** La lógica de validación de cada método de pago está aislada, lo que facilita el mantenimiento y la comprensión del código.
@@ -50,11 +52,21 @@ sequenceDiagram
 
 ## Tests
 
-El proyecto incluye una batería de tests unitarios ubicados en la carpeta `src/tests`. Estos tests verifican el correcto funcionamiento de las estrategias de validación de métodos de pago y la fábrica de estrategias.
+El proyecto incluye una batería de tests unitarios ubicados en la carpeta `src/tests`. Estos tests verifican el correcto funcionamiento de las estrategias de validación de métodos de pago y la fábrica de estrategias.Los tests se ejecutan automáticamente en cada Pull Request gracias al pipeline de CI en GitHub Actions.
 
 ### ¿Qué se prueba?
 
 - **Estrategias de validación:** Se testean las clases que implementan la lógica de validación para cada método de pago (por ejemplo, PayPal y tarjeta de crédito).
+
+  **PayPalValidationStrategy**
+  - Acepta montos inferiores a 5000.
+  - Rechaza montos iguales o superiores a dicho límite.
+
+  **CreditCardValidationStrategy**
+  - Requiere montos inferiores a 10.000.
+  - Exige que exista exactamente un pago registrado previo del mismo método.
+  - Rechaza pagos sin historial o con un número incorrecto de registros previos.
+
 - **Factory de estrategias:** Se verifica que la clase `PaymentMethodValidationStrategyFactory` retorne la estrategia adecuada según el método de pago solicitado y que maneje correctamente métodos desconocidos.
 - **Cobertura mínima:** El workflow de CI exige al menos 3 tests unitarios ejecutados en cada Pull Request hacia la rama `main`.
 
